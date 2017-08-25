@@ -18,34 +18,81 @@
  */
 var app = {
     // Application Constructor
-    initialize: function() {
+    initialize: function () {
         this.bindEvents();
     },
     // Bind Event Listeners
     //
     // Bind any events that are required on startup. Common events are:
     // 'load', 'deviceready', 'offline', and 'online'.
-    bindEvents: function() {
+    bindEvents: function () {
         document.addEventListener('deviceready', this.onDeviceReady, false);
     },
     // deviceready Event Handler
     //
     // The scope of 'this' is the event. In order to call the 'receivedEvent'
     // function, we must explicitly call 'app.receivedEvent(...);'
-    onDeviceReady: function() {
-        app.receivedEvent('deviceready');
+    onDeviceReady: function () {
+        app.receivedEvent('#deviceready');
     },
     // Update DOM on a Received Event
-    receivedEvent: function(id) {
-        var parentElement = document.getElementById(id);
-        var listeningElement = parentElement.querySelector('.listening');
-        var receivedElement = parentElement.querySelector('.received');
+    receivedEvent: function (id) {
 
-        listeningElement.setAttribute('style', 'display:none;');
-        receivedElement.setAttribute('style', 'display:block;');
+        var parentElement = $(id);
+        $('.listening', parentElement).hide();
+        $('.received', parentElement).show();
 
-        console.log(jQuery);
+        this.boot();
 
         console.log('Received Event: ' + id);
+    },
+    // Boot app
+    boot: function () {
+
+        var $this = this;
+
+        $.support.cors=true;
+
+        var $client = new ApiClient({
+            token : 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjdiMDAzZDNiODc5YTBmYzVjYzUyOGMxMzI2YzgwMjhlMjU5YjVmMDUyMTUwNzkwN2ViYjhmMmE1ODcyMzMxMjIwNjBmZThmMDM0ZTRjYThmIn0.eyJhdWQiOiIxMSIsImp0aSI6IjdiMDAzZDNiODc5YTBmYzVjYzUyOGMxMzI2YzgwMjhlMjU5YjVmMDUyMTUwNzkwN2ViYjhmMmE1ODcyMzMxMjIwNjBmZThmMDM0ZTRjYThmIiwiaWF0IjoxNTAzNTAzNTYyLCJuYmYiOjE1MDM1MDM1NjIsImV4cCI6MTUzNTAzOTU2Miwic3ViIjoiMSIsInNjb3BlcyI6W119.BP4_qDi30Tzt6vRwIQa8HADX-6iqUJiZsCRnswsYm2Pi5_pagpZXuWL3QTgUcm7J-ux6YWlZ8iNHJM_6KA3VVlUsbOe-a7s6oODDRuCIYb3tPMmu-eMpXveqDhNvsNEjXiY5f_55kHb7qO9kAX9vjBvJl86HqojmKHY4Lk9RF9t05ZIVNmcek7tfIxtmJT1D0IowVlRRiHFN9DBDEG81OZdP9prHIv_BKwaYc1Kk97x6AZjLb0I4tPMnt8-c0hTUYKLfTzm4API6pevnk8QxmoVwkANMH6qaImK0spVpqLFJSAvHx-uLGQh1tkbWnEZhSYPrlnqHJCgf8hNKBNl9Loshe8_NoNn8o2EXEy7JBN7UQLdUzLCRLvHZXIa4HD6ECdskZg9ubp4zKYuo9aLVS6SyXQUFVCXlc4vtwpf0KiR4ugdJNlu9qDhkvcLt1HdgYYP73gahPpaQjZUvc7Fi1Mn5jBUJKbrxGNJDaYF65uWWvdZYh1wAxn26CIb3EO0SB3TUFxxISqEJgEh0JaImkReiyQD9VWdrDJ6mX9nWZRjiAkU5EMC-sYsFy3daFKLeoz6fUKEaYvq2R3BGvCurH1m2cINseQLGT2phuE8CEqqQ1nm0Ozjsf-5f4wsUFs3I6SRcw54YxF1RUATOxIoEPpX9nnw0xevWpDAc79bCcyE',
+            code: 'zFIcfM'
+        });
+
+        $client.tours(function (response){
+            $('#page-content').html(
+                // $this.view(response.data)
+                '<ul data-role="listview" data-theme="b">\n' +
+                '    <li class="ui-li-static ui-body-inherit ui-first-child">Acura</li>\n' +
+                '    <li>Audi</li>\n' +
+                '    <li>BMW</li>\n' +
+                '    <li>Cadillac</li>\n' +
+                '    <li>Ferrari</li>\n' +
+                '</ul>'
+            );
+        }, function(data){
+            if (data.status == 0 && data.error != 'undefined') {
+                alert(data.error);
+            }
+        });
+    },
+
+
+    view: function(data) {
+        var $ul = $('<ul/>', {
+            'data-role': 'listview',
+            'data-theme': 'a',
+            'id': 'tour-list'
+        })
+
+        $.each(data, function(index, values){
+            $ul.append(
+                $('<li/>', {'html' : values.title})
+            );
+            $ul.append(
+                $('<li/>', {'html' : values.title})
+            );
+        });
+
+        return $ul;
     }
 };
