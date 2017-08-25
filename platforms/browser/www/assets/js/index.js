@@ -79,7 +79,7 @@ var app = {
 
         $.each(data, function(index, values){
             $ul.append(
-                $('<li/>', {'html' : values.title})
+                $('<li/>', {'html' : values.loading.city + ' - ' + values.unloading.city})
             );
             $ul.append(
                 $('<li/>', {'html' : values.title})
