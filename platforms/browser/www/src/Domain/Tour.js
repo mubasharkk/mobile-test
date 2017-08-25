@@ -1,13 +1,13 @@
 class Tour {
     constructor(data) {
-
+        this.data = data;
     }
 
     get id() {
-        return data.id;
+        return this.data.id;
     }
 
     get title() {
-        return data.title;
+        return this.data.title;
     }
 }

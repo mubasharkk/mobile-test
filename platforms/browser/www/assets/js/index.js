@@ -59,16 +59,9 @@ var app = {
         });
 
         $client.tours(function (response){
-            $('#page-content').html(
-                // $this.view(response.data)
-                '<ul data-role="listview" data-theme="b">\n' +
-                '    <li class="ui-li-static ui-body-inherit ui-first-child">Acura</li>\n' +
-                '    <li>Audi</li>\n' +
-                '    <li>BMW</li>\n' +
-                '    <li>Cadillac</li>\n' +
-                '    <li>Ferrari</li>\n' +
-                '</ul>'
-            );
+            $content = $this.view(response.data)
+            $('#page-content').html($content);
+            $content.listview();
         }, function(data){
             if (data.status == 0 && data.error != 'undefined') {
                 alert(data.error);
